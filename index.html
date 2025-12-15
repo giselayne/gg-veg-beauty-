@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <title>Login | GG Veg&Beauty</title>
+  <title>GG Veg&Beauty</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <style>
@@ -11,29 +11,32 @@
       font-family: Arial, sans-serif;
       background: linear-gradient(135deg, #f9c5d1, #c084fc);
       min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    }
+
+    header {
+      background: white;
+      padding: 15px 20px;
+      text-align: center;
+      font-weight: bold;
+      color: #6b21a8;
+    }
+
+    .container {
+      padding: 20px;
+    }
+
+    .hidden {
+      display: none;
     }
 
     .card {
       background: white;
-      padding: 30px;
-      width: 100%;
-      max-width: 380px;
+      padding: 25px;
+      max-width: 400px;
+      margin: 60px auto;
       border-radius: 20px;
       box-shadow: 0 10px 25px rgba(0,0,0,0.15);
       text-align: center;
-    }
-
-    h1 {
-      color: #6b21a8;
-      margin-bottom: 5px;
-    }
-
-    p {
-      color: #a855f7;
-      margin-bottom: 25px;
     }
 
     input {
@@ -42,7 +45,6 @@
       margin-bottom: 12px;
       border-radius: 10px;
       border: 1px solid #ddd;
-      font-size: 14px;
     }
 
     button {
@@ -56,48 +58,78 @@
       cursor: pointer;
     }
 
-    .toggle {
-      margin-top: 15px;
-      font-size: 14px;
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 15px;
     }
 
-    .toggle a {
-      color: #6b21a8;
+    .product {
+      background: white;
+      padding: 15px;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .product h3 {
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+
+    .product p {
       font-weight: bold;
-      cursor: pointer;
-      text-decoration: none;
+      color: #6b21a8;
+      margin-bottom: 10px;
     }
   </style>
 </head>
 
 <body>
-  <div class="card">
-    <h1>GG Veg&Beauty</h1>
-    <p id="subtitle">Entrar</p>
 
-    <input id="name" type="text" placeholder="Nome completo" style="display:none;" />
-    <input type="email" placeholder="E-mail" />
-    <input type="password" placeholder="Senha" />
+<header>GG Veg&Beauty 💄🌱</header>
 
-    <button>Entrar</button>
+<!-- LOGIN -->
+<div id="login" class="card">
+  <h2>Entrar</h2>
+  <input type="email" placeholder="E-mail" />
+  <input type="password" placeholder="Senha" />
+  <button onclick="entrar()">Entrar</button>
+</div>
 
-    <div class="toggle">
-      <span id="text">Não tem conta?</span>
-      <a onclick="toggle()"> Criar agora</a>
+<!-- LOJA -->
+<div id="store" class="container hidden">
+  <h2>Batons 💋</h2>
+
+  <div class="products">
+    <div class="product">
+      <h3>Batom Ruby Rose</h3>
+      <p>R$ 12,90</p>
+      <button>Adicionar</button>
+    </div>
+
+    <div class="product">
+      <h3>Batom Vult</h3>
+      <p>R$ 24,90</p>
+      <button>Adicionar</button>
+    </div>
+
+    <div class="product">
+      <h3>Batom MAC</h3>
+      <p>R$ 109,90</p>
+      <button>Adicionar</button>
     </div>
   </div>
+</div>
 
-  <script>
-    let login = true;
+<script>
+  function entrar() {
+    document.getElementById('login').classList.add('hidden');
+    document.getElementById('store').classList.remove('hidden');
+  }
+</script>
 
-    function toggle() {
-      login = !login;
-      document.getElementById('subtitle').innerText = login ? 'Entrar' : 'Criar conta';
-      document.querySelector('button').innerText = login ? 'Entrar' : 'Cadastrar';
-      document.getElementById('text').innerText = login ? 'Não tem conta?' : 'Já tem conta?';
-      document.getElementById('name').style.display = login ? 'none' : 'block';
-    }
-  </script>
 </body>
 </html>
+
 
