@@ -1,75 +1,130 @@
+Agora, vamos separar a **visão do administrador** (admin) da **visão do cliente** de forma bem clara e simples, além de adicionar a parte de **cadastro** de usuário para permitir a criação de contas e a utilização dessas funcionalidades de forma segura. Vou detalhar tudo para você conseguir **copiar e colar**.
+
+---
+
+## 🛠️ COMO VAI FICAR A ESTRUTURA
+
+1. **Visão do Cliente**
+
+   * Loja, carrinho e checkout
+   * Cadastro de usuário e login
+
+2. **Visão do Administrador**
+
+   * Acesso restrito via login
+   * Painel para visualizar pedidos
+
+### O que vamos adicionar:
+
+* **Cadastro de usuário** no frontend (não envolve banco, mas sim `localStorage`).
+* **Login de Admin** (senão o painel fica escondido).
+* Separação clara das duas partes da loja.
+
+### ⚠️ AVISO IMPORTANTE:
+
+O código **não está com backend real** (a parte do banco de dados, com MySQL). Então, ao salvar informações de cadastro e pedidos, vamos usar o `localStorage` — o que é **só temporário** (vai sumir se limpar o cache do navegador). Para **backend real**, precisamos de um projeto separado depois.
+
+---
+
+## 🟣 CÓDIGO COMPLETO (Separado com Cadastro)
+
+### 1️⃣ **Seção de Cadastro + Login + Visão Cliente**
+
+```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<title>GG Veg&Beauty</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
-
-<style>
-body{
-  margin:0;
-  font-family:Arial, sans-serif;
-  background:linear-gradient(135deg,#fce7f3,#e9d5ff);
-}
-header{
-  background:#fff;
-  padding:18px;
-  text-align:center;
-  font-size:22px;
-  font-weight:bold;
-  color:#7e22ce;
-}
-.hidden{display:none;}
-.container{max-width:1100px;margin:auto;padding:20px;}
-.products{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-  gap:20px;
-}
-.product, .card{
-  background:#fff;
-  padding:18px;
-  border-radius:18px;
-  box-shadow:0 8px 20px rgba(0,0,0,.1);
-}
-button{
-  width:100%;
-  padding:12px;
-  border:none;
-  border-radius:14px;
-  background:linear-gradient(135deg,#ec4899,#d946ef);
-  color:#fff;
-  cursor:pointer;
-  margin-top:10px;
-}
-.cart-item{
-  display:flex;
-  justify-content:space-between;
-  margin-bottom:8px;
-}
-.remove{
-  background:#f43f5e;
-  border:none;
-  color:#fff;
-  border-radius:8px;
-  padding:4px 6px;
-  cursor:pointer;
-}
-.admin-btn{
-  position:fixed;
-  bottom:15px;
-  right:15px;
-  background:#7e22ce;
-}
-</style>
+  <meta charset="UTF-8">
+  <title>GG Veg&Beauty</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+  <style>
+    body{
+      margin:0;
+      font-family:Arial, sans-serif;
+      background:linear-gradient(135deg,#fce7f3,#e9d5ff);
+    }
+    header{
+      background:#fff;
+      padding:18px;
+      text-align:center;
+      font-size:22px;
+      font-weight:bold;
+      color:#7e22ce;
+    }
+    .hidden{display:none;}
+    .container{max-width:1100px;margin:auto;padding:20px;}
+    .products{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+      gap:20px;
+    }
+    .product, .card{
+      background:#fff;
+      padding:18px;
+      border-radius:18px;
+      box-shadow:0 8px 20px rgba(0,0,0,.1);
+    }
+    button{
+      width:100%;
+      padding:12px;
+      border:none;
+      border-radius:14px;
+      background:linear-gradient(135deg,#ec4899,#d946ef);
+      color:#fff;
+      cursor:pointer;
+      margin-top:10px;
+    }
+    .cart-item{
+      display:flex;
+      justify-content:space-between;
+      margin-bottom:8px;
+    }
+    .remove{
+      background:#f43f5e;
+      border:none;
+      color:#fff;
+      border-radius:8px;
+      padding:4px 6px;
+      cursor:pointer;
+    }
+    .admin-btn{
+      position:fixed;
+      bottom:15px;
+      right:15px;
+      background:#7e22ce;
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+    }
+  </style>
 </head>
 
 <body>
 
 <header>GG Veg&Beauty 💄🌱</header>
 
-<div class="container" id="store">
+<!-- VISÃO DO CLIENTE -->
+
+<!-- Tela de login -->
+<div class="container" id="login">
+  <h2>Entrar ou Cadastre-se</h2>
+  <input id="email" type="email" placeholder="E-mail" />
+  <input id="password" type="password" placeholder="Senha" />
+  <button onclick="login()">Entrar</button>
+  <hr>
+  <h3>Não tem conta? Cadastre-se!</h3>
+  <input id="newEmail" type="email" placeholder="Novo e-mail" />
+  <input id="newPassword" type="password" placeholder="Nova senha" />
+  <button onclick="cadastro()">Cadastrar</button>
+</div>
+
+<!-- Visão do cliente com loja -->
+<div id="store" class="container hidden">
   <h2>Batons</h2>
   <div class="products">
     <div class="product"><h3>Batom Ruby Rose</h3><p>R$ 12,90</p><button onclick="add('Ruby Rose',12.9)">Adicionar</button></div>
@@ -85,6 +140,7 @@ button{
   </div>
 </div>
 
+<!-- Checkout -->
 <div class="container hidden" id="checkout">
   <div class="card">
     <h3>Pagamento Pix</h3>
@@ -95,68 +151,99 @@ button{
   </div>
 </div>
 
-<div class="container hidden" id="admin">
-  <div class="card">
-    <h3>Painel Administrativo</h3>
-    <div id="orders"></div>
-    <button onclick="clearOrders()">Limpar pedidos</button>
-  </div>
-</div>
-
+<!-- Admin -->
 <button class="admin-btn" onclick="toggleAdmin()">Admin</button>
 
 <script>
-let cart=[], total=0;
+// Definir variáveis de estado
+let cart = [], total = 0, loggedInUser = null;
 
-function add(name,price){
-  cart.push({name,price});
-  render();
+// Função para cadastrar usuário
+function cadastro() {
+  const email = document.getElementById("newEmail").value;
+  const password = document.getElementById("newPassword").value;
+  if (email && password) {
+    localStorage.setItem('user', JSON.stringify({ email, password }));
+    alert('Cadastro realizado com sucesso! Agora faça login.');
+  } else {
+    alert('Preencha todos os campos!');
+  }
 }
-function render(){
-  const c=document.getElementById('cart');
-  c.innerHTML=''; total=0;
-  cart.forEach((i,idx)=>{
-    total+=i.price;
-    c.innerHTML+=`<div class="cart-item">${i.name} - R$ ${i.price.toFixed(2)}
-    <button class="remove" onclick="cart.splice(${idx},1);render()">X</button></div>`;
+
+// Função de login
+function login() {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+  const user = JSON.parse(localStorage.getItem('user'));
+  if (user && user.email === email && user.password === password) {
+    loggedInUser = user;
+    document.getElementById("login").classList.add('hidden');
+    document.getElementById("store").classList.remove('hidden');
+  } else {
+    alert('Usuário ou senha inválidos!');
+  }
+}
+
+// Função de logout
+function logout() {
+  loggedInUser = null;
+  document.getElementById("store").classList.add('hidden');
+  document.getElementById("login").classList.remove('hidden');
+}
+
+// Função de adicionar produtos ao carrinho
+function add(name, price) {
+  cart.push({ name, price });
+  renderCart();
+}
+
+// Função de renderização do carrinho
+function renderCart() {
+  const cartDiv = document.getElementById('cart');
+  cartDiv.innerHTML = '';
+  total = 0;
+  cart.forEach((item, index) => {
+    total += item.price;
+    cartDiv.innerHTML += `
+      <div class="cart-item">
+        ${item.name} - R$ ${item.price.toFixed(2)}
+        <button class="remove" onclick="removeItem(${index})">X</button>
+      </div>
+    `;
   });
-  document.getElementById('total').innerText=`Total: R$ ${total.toFixed(2)}`;
+  document.getElementById('total').innerText = `Total: R$ ${total.toFixed(2)}`;
 }
-function checkout(){
-  if(!cart.length){alert('Carrinho vazio');return;}
+
+// Função de remover item do carrinho
+function removeItem(index) {
+  cart.splice(index, 1);
+  renderCart();
+}
+
+// Função de checkout
+function checkout() {
+  if (!cart.length) {
+    alert('Carrinho vazio');
+    return;
+  }
   document.getElementById('store').classList.add('hidden');
   document.getElementById('checkout').classList.remove('hidden');
-  document.getElementById('checkoutTotal').innerText=`Valor: R$ ${total.toFixed(2)}`;
-  QRCode.toCanvas(document.getElementById('qrcode'),
-  `PIX CPF 13895587460 VALOR ${total.toFixed(2)}`);
+  document.getElementById('checkoutTotal').innerText = `Valor: R$ ${total.toFixed(2)}`;
+  QRCode.toCanvas(document.getElementById('qrcode'), `PIX CPF 13895587460 VALOR ${total.toFixed(2)}`);
 }
-function finalizar(){
-  const pedidos=JSON.parse(localStorage.getItem('orders')||'[]');
-  pedidos.push({data:new Date().toLocaleString(),cart,total});
-  localStorage.setItem('orders',JSON.stringify(pedidos));
+
+// Função de finalizar compra
+function finalizar() {
+  const pedidos = JSON.parse(localStorage.getItem('orders') || '[]');
+  pedidos.push({ data: new Date().toLocaleString(), cart, total });
+  localStorage.setItem('orders', JSON.stringify(pedidos));
   alert('Pedido registrado! Envie o comprovante para giselaynegih@gmail.com');
-  cart=[]; total=0; render();
+  cart = [];
+  total = 0;
+  renderCart();
   document.getElementById('checkout').classList.add('hidden');
   document.getElementById('store').classList.remove('hidden');
 }
-function toggleAdmin(){
-  const a=document.getElementById('admin');
-  a.classList.toggle('hidden');
-  loadOrders();
-}
-function loadOrders(){
-  const o=document.getElementById('orders');
-  const pedidos=JSON.parse(localStorage.getItem('orders')||'[]');
-  o.innerHTML='';
-  pedidos.forEach(p=>{
-    o.innerHTML+=`<p>${p.data} — R$ ${p.total.toFixed(2)}</p>`;
-  });
-}
-function clearOrders(){
-  localStorage.removeItem('orders');
-  loadOrders();
-}
-</script>
 
-</body>
-</html>
+// Função de ativar/desativar
+```
