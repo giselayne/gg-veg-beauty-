@@ -1,36 +1,3 @@
-Agora, vamos separar a **visão do administrador** (admin) da **visão do cliente** de forma bem clara e simples, além de adicionar a parte de **cadastro** de usuário para permitir a criação de contas e a utilização dessas funcionalidades de forma segura. Vou detalhar tudo para você conseguir **copiar e colar**.
-
----
-
-## 🛠️ COMO VAI FICAR A ESTRUTURA
-
-1. **Visão do Cliente**
-
-   * Loja, carrinho e checkout
-   * Cadastro de usuário e login
-
-2. **Visão do Administrador**
-
-   * Acesso restrito via login
-   * Painel para visualizar pedidos
-
-### O que vamos adicionar:
-
-* **Cadastro de usuário** no frontend (não envolve banco, mas sim `localStorage`).
-* **Login de Admin** (senão o painel fica escondido).
-* Separação clara das duas partes da loja.
-
-### ⚠️ AVISO IMPORTANTE:
-
-O código **não está com backend real** (a parte do banco de dados, com MySQL). Então, ao salvar informações de cadastro e pedidos, vamos usar o `localStorage` — o que é **só temporário** (vai sumir se limpar o cache do navegador). Para **backend real**, precisamos de um projeto separado depois.
-
----
-
-## 🟣 CÓDIGO COMPLETO (Separado com Cadastro)
-
-### 1️⃣ **Seção de Cadastro + Login + Visão Cliente**
-
-```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -246,4 +213,3 @@ function finalizar() {
 }
 
 // Função de ativar/desativar
-```
