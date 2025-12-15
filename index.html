@@ -15,7 +15,7 @@
 
     header {
       background: white;
-      padding: 15px 20px;
+      padding: 15px;
       text-align: center;
       font-weight: bold;
       color: #6b21a8;
@@ -49,13 +49,14 @@
 
     button {
       width: 100%;
-      padding: 12px;
+      padding: 10px;
       background: #ec4899;
       border: none;
       border-radius: 12px;
       color: white;
-      font-size: 16px;
+      font-size: 14px;
       cursor: pointer;
+      margin-top: 5px;
     }
 
     .products {
@@ -72,15 +73,30 @@
       box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     }
 
-    .product h3 {
-      font-size: 14px;
-      margin-bottom: 5px;
+    .cart {
+      background: white;
+      padding: 15px;
+      border-radius: 16px;
+      margin-top: 20px;
     }
 
-    .product p {
-      font-weight: bold;
+    .cart h3 {
+      margin-top: 0;
       color: #6b21a8;
-      margin-bottom: 10px;
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    .total {
+      font-weight: bold;
+      margin-top: 10px;
+      text-align: right;
+      color: #6b21a8;
     }
   </style>
 </head>
@@ -105,27 +121,58 @@
     <div class="product">
       <h3>Batom Ruby Rose</h3>
       <p>R$ 12,90</p>
-      <button>Adicionar</button>
+      <button onclick="addCart('Batom Ruby Rose', 12.9)">Adicionar</button>
     </div>
 
     <div class="product">
       <h3>Batom Vult</h3>
       <p>R$ 24,90</p>
-      <button>Adicionar</button>
+      <button onclick="addCart('Batom Vult', 24.9)">Adicionar</button>
     </div>
 
     <div class="product">
       <h3>Batom MAC</h3>
       <p>R$ 109,90</p>
-      <button>Adicionar</button>
+      <button onclick="addCart('Batom MAC', 109.9)">Adicionar</button>
     </div>
+  </div>
+
+  <!-- CARRINHO -->
+  <div class="cart">
+    <h3>Carrinho 🛒</h3>
+    <div id="cartItems"></div>
+    <div class="total" id="total">Total: R$ 0,00</div>
   </div>
 </div>
 
 <script>
+  let cart = [];
+  let total = 0;
+
   function entrar() {
     document.getElementById('login').classList.add('hidden');
     document.getElementById('store').classList.remove('hidden');
+  }
+
+  function addCart(name, price) {
+    cart.push({ name, price });
+    total += price;
+    renderCart();
+  }
+
+  function renderCart() {
+    const cartItems = document.getElementById('cartItems');
+    cartItems.innerHTML = '';
+
+    cart.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'cart-item';
+      div.innerHTML = `<span>${item.name}</span><span>R$ ${item.price.toFixed(2)}</span>`;
+      cartItems.appendChild(div);
+    });
+
+    document.getElementById('total').innerText =
+      `Total: R$ ${total.toFixed(2)}`;
   }
 </script>
 
