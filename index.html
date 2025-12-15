@@ -1,51 +1,103 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <title>GG Veg&Beauty</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <style>
-      body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-        background: linear-gradient(135deg, #f9c5d1, #c084fc);
-        color: #4b006e;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        text-align: center;
-      }
-      .box {
-        background: white;
-        padding: 30px;
-        border-radius: 20px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-      }
-      h1 {
-        margin-bottom: 10px;
-      }
-      p {
-        margin-bottom: 20px;
-      }
-      button {
-        background: #ec4899;
-        color: white;
-        border: none;
-        padding: 12px 20px;
-        border-radius: 12px;
-        cursor: pointer;
-        font-size: 16px;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="box">
-      <h1>GG Veg&Beauty 💄🌱</h1>
-      <p>Sua loja vegana e cruelty-free está no ar!</p>
-      <button onclick="alert('Em breve: loja completa!')">
-        Entrar na loja
-      </button>
+<head>
+  <meta charset="UTF-8" />
+  <title>Login | GG Veg&Beauty</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #f9c5d1, #c084fc);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card {
+      background: white;
+      padding: 30px;
+      width: 100%;
+      max-width: 380px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      text-align: center;
+    }
+
+    h1 {
+      color: #6b21a8;
+      margin-bottom: 5px;
+    }
+
+    p {
+      color: #a855f7;
+      margin-bottom: 25px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 12px;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+      font-size: 14px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #ec4899;
+      border: none;
+      border-radius: 12px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .toggle {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+
+    .toggle a {
+      color: #6b21a8;
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <h1>GG Veg&Beauty</h1>
+    <p id="subtitle">Entrar</p>
+
+    <input id="name" type="text" placeholder="Nome completo" style="display:none;" />
+    <input type="email" placeholder="E-mail" />
+    <input type="password" placeholder="Senha" />
+
+    <button>Entrar</button>
+
+    <div class="toggle">
+      <span id="text">Não tem conta?</span>
+      <a onclick="toggle()"> Criar agora</a>
     </div>
-  </body>
+  </div>
+
+  <script>
+    let login = true;
+
+    function toggle() {
+      login = !login;
+      document.getElementById('subtitle').innerText = login ? 'Entrar' : 'Criar conta';
+      document.querySelector('button').innerText = login ? 'Entrar' : 'Cadastrar';
+      document.getElementById('text').innerText = login ? 'Não tem conta?' : 'Já tem conta?';
+      document.getElementById('name').style.display = login ? 'none' : 'block';
+    }
+  </script>
+</body>
 </html>
+
